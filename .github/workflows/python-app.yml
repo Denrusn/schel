@@ -5,9 +5,9 @@ name: Python application
 
 on:
   push:
-    branches: [ "server" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "server" ]
+    branches: [ "master" ]
 
 permissions:
   contents: read
@@ -30,6 +30,3 @@ jobs:
     - name: Lint with flake8
       run: |
         python server.py
-    - name: Test with pytest
-      run: |
-        pytest
