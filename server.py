@@ -4,4 +4,4 @@ def homepage():
 
 
 if __name__ == "__main__":
-    homepage()
+    print(homepage())
