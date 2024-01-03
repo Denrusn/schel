@@ -25,3 +25,5 @@ jobs:
     - name: run server
       run: |
         python server.py
+    - name: Run a one-line script
+      run: echo Helloooooooooooooooooooooooooooooo, world!
