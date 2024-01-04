@@ -1,4 +1,5 @@
 click==8.0.1
+bilili
 bilibili
 requests
 
