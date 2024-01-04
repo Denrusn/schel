@@ -32,8 +32,11 @@ jobs:
       run: |
         git config --local user.email "dengrunsen@qq.com"
         git config --local user.name "Denrusn"
-        git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
         git pull 
         git add .
         git commit -m "Update my server"
-        git push
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@main
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
