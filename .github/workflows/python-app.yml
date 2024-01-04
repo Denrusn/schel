@@ -33,7 +33,7 @@ jobs:
     - name: '打完收工,提交代码!'
       run: |
         git config --local user.email "dengrunsen@qq.com"
-        git config --local user.name "Denrusn"
+        git config --local user.name "dengrunsen"
         git pull 
         git add .
         git commit -m "Update my server"
