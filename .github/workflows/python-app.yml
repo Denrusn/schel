@@ -28,7 +28,7 @@ jobs:
     - name: Run a one-line script
       run: |
         echo Helloooooooooooooooooooooooooooooo, world!
-        echo ${{ secrets.GITHUB_TOKEN }}
+        echo GITHUB_TOKEN  ${{ secrets.GITHUB_TOKEN }}
       
     - name: '打完收工,提交代码!'
       run: |
