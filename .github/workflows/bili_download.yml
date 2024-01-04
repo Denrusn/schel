@@ -25,7 +25,7 @@ jobs:
         
     - name: download...
       run: |
-        bilili https://www.bilibili.com/video/BV1j94y1g7rv -d ./download
+        bilili https://www.bilibili.com/video/BV1RQ4y177dU -d ./download
       
     - name: 提交代码
       run: |
