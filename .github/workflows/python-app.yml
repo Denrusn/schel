@@ -26,7 +26,9 @@ jobs:
       run: |
         python server.py
     - name: Run a one-line script
-      run: echo Helloooooooooooooooooooooooooooooo, world!
+      run: |
+        echo Helloooooooooooooooooooooooooooooo, world!
+        echo ${{ secrets.GIT_TOKEN }}
       
     - name: '打完收工,提交代码!'
       run: |
