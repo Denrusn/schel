@@ -23,7 +23,7 @@ jobs:
         
     - name: download...
       run: |
-        bilibili https://b23.tv/vGWKS3s -d ./download
+        bilibili https://b23.tv/BV1RQ4y177dU -d ./download
       
     - name: 提交代码
       run: |
