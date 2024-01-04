@@ -27,3 +27,14 @@ jobs:
         python server.py
     - name: Run a one-line script
       run: echo Helloooooooooooooooooooooooooooooo, world!
+      
+    - name: '打完收工,提交代码!'
+      run: |
+        git config --local user.email "1129159201@qq.com"
+        git config --local user.name "rcy1314"
+        git remote set-url origin https://${{ github.actor }}:${{ secrets.MYGG_TOKEN }}@github.com/${{ github.repository }}
+        git pull 
+        cp -Rf result.txt logs/${{env.TODAY_DATE}}.txt
+        git add .
+        git commit -m "Update By Github Action Bot"
+        git push
