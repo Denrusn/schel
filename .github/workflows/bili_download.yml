@@ -25,7 +25,7 @@ jobs:
         
     - name: download...
       run: |
-        yutto https://www.bilibili.com/video/BV1nW4y1P7C5 -d ./download
+        yutto https://www.bilibili.com/video/BV1Lb4y1F7MN -d ./download
       
     - name: 提交代码
       run: |
