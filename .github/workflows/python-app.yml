@@ -28,18 +28,18 @@ jobs:
         echo Helloooooooooooooooooooooooooooooo, world!
         echo GITHUB_TOKEN  ${{ secrets.GITHUB_TOKEN }}
       
-    - name: '打完收工,提交代码!'
-      run: |
-        git config --local user.email "dengrunsen@qq.com"
-        git config --local user.name "Denrusn"
-        git pull 
-        git add .
-        git commit -m "Update my server"
+    # - name: '打完收工,提交代码!'
+    #   run: |
+    #     git config --local user.email "dengrunsen@qq.com"
+    #     git config --local user.name "Denrusn"
+    #     git pull 
+    #     git add .
+    #     git commit -m "Update my server"
         
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Push changes
+    #   uses: ad-m/github-push-action@master
+    #   with:
+    #     github_token: ${{ secrets.GITHUB_TOKEN }}
       # run: |
       #   git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Denrusn/schel.git
       #   git push -u origin main
