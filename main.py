@@ -8,6 +8,7 @@ import pytz
 from datetime import datetime, timedelta
 from prettytable import from_csv
 from io import StringIO
+import os
 
 
 def export_df_to_table(dataframe):
@@ -53,7 +54,6 @@ class Zhiboba(object):
     def main(self):
         self.home_page()
         # game_id = str(input("请输入比赛ID："))
-        # self.live(game_id)
         self.live()
 
     def home_page(self):
@@ -84,12 +84,13 @@ class Zhiboba(object):
         df = df[df['data-time'] <= beijing_tomorrow]
         df = df.loc[:, ['label', 'data-time', 'id']]
         df_str = export_df_to_table(df)
-        print(df_str)
+        os.popen(f"echo {df_str}")
 
     def live(self, game_id="1231105", sid_no_change_limit=10):
         # 获取最大信号max_sid
         max_sid = self.get_live_max_sid(game_id)
-        print(max_sid)
+        os.popen(f"echo {max_sid}")
+
 
         # 往前查30个sid
         for i in range(max_sid - 30, max_sid + 1):
@@ -117,8 +118,8 @@ class Zhiboba(object):
 
             if sid_no_change > sid_no_change_limit:
                 # 如果sid没变化超过限制次数则退出循环
-                print("SID No Change。。。")
-                print("EXIT!")
+                os.popen(f"echo SID No Change。。。")
+                os.popen(f"EXIT!")
                 break
 
     def get_live_data_by_sid(self, game_id, sid):
@@ -147,14 +148,14 @@ class Zhiboba(object):
                 live_time = item.get("live_time")[11:]
                 left_score = item.get('left').get('score')
                 right_score = item.get('left').get('score')
-                print(f"{live_time}| {left_score} - {right_score}| {user_chn}| {live_text}")
+                os.popen(f"echo {live_time}| {left_score} - {right_score}| {user_chn}| {live_text}")
 
                 img_url = item.get("img_url", '')
                 if img_url:
-                    print(img_url)
+                    os.popen(f"echo {img_url}")
 
             except Exception as e:
-                print('ERROR: Live Format Error.')
+                os.popen('echo ERROR: Live Format Error.')
                 continue
 
 
