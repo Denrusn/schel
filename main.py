@@ -52,8 +52,9 @@ class Zhiboba(object):
 
     def main(self):
         self.home_page()
-        game_id = str(input("请输入比赛ID："))
-        self.live(game_id)
+        # game_id = str(input("请输入比赛ID："))
+        # self.live(game_id)
+        self.live()
 
     def home_page(self):
         '''
