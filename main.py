@@ -1,6 +1,22 @@
+# -*- coding: utf-8 -*-
 import requests
 import random
 import time
+from lxml import etree
+import pandas as pd
+import pytz
+from datetime import datetime, timedelta
+from prettytable import from_csv
+from io import StringIO
+
+
+def export_df_to_table(dataframe):
+    """工具函数：将dataframe的表格输出为 prettytable 表示的表格"""
+    output = StringIO()
+    dataframe.to_csv(output)
+    output.seek(0)
+    string_value = from_csv(output)
+    return string_value
 
 
 class HupuSpider(object):
@@ -34,7 +50,42 @@ class Zhiboba(object):
 
         }
 
-    def live(self, game_id="1231104", sid_no_change_limit=10):
+    def main(self):
+        self.home_page()
+        game_id = str(input("请输入比赛ID："))
+        self.live(game_id)
+
+    def home_page(self):
+        '''
+        主页，获取赛事game_id
+        :return:
+        '''
+
+        def remove_el(data_list, *args):
+            for el in args:
+                data_list.remove(el)
+            return data_list
+
+        url = "https://www.zhibo8.com/"
+        res = requests.get(url, headers=self.headers, verify=False)
+        html = etree.HTML(res.content.decode())
+        basketball_li = html.xpath("//div[@class='_content']//li[@data-type='basketball']")
+        basketball_info = list(map(lambda x: dict(x.attrib), basketball_li))
+        df = pd.DataFrame(basketball_info)
+        df['id'] = df['id'].apply(lambda x: x[6:])
+        df = df[df['label'].apply(lambda x: "NBA" in x)]
+        df['label'] = df['label'].apply(lambda x: ','.join(remove_el(x.split(','), 'NBA', '篮球')))
+        df['data-time'] = pd.to_datetime(df['data-time'])
+
+        shanghai_tz = pytz.timezone('Asia/Shanghai')
+        utc_tomorrow = datetime.now() + timedelta(days=1)
+        beijing_tomorrow = utc_tomorrow.astimezone(shanghai_tz).strftime("%Y-%m-%d") + " 23:59:59"
+        df = df[df['data-time'] <= beijing_tomorrow]
+        df = df.loc[:, ['label', 'data-time', 'id']]
+        df_str = export_df_to_table(df)
+        print(df_str)
+
+    def live(self, game_id="1231105", sid_no_change_limit=10):
         # 获取最大信号max_sid
         max_sid = self.get_live_max_sid(game_id)
         print(max_sid)
@@ -110,4 +161,4 @@ if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
     z_obj = Zhiboba()
-    z_obj.live()
+    z_obj.main()
