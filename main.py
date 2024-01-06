@@ -84,12 +84,12 @@ class Zhiboba(object):
         df = df[df['data-time'] <= beijing_tomorrow]
         df = df.loc[:, ['label', 'data-time', 'id']]
         df_str = export_df_to_table(df)
-        os.popen(f"echo {df_str}")
+        os.popen(f'echo "{df_str}"')
 
     def live(self, game_id="1231105", sid_no_change_limit=10):
         # 获取最大信号max_sid
         max_sid = self.get_live_max_sid(game_id)
-        os.popen(f"echo {max_sid}")
+        os.popen(f'echo "{max_sid}"')
 
 
         # 往前查30个sid
@@ -118,8 +118,8 @@ class Zhiboba(object):
 
             if sid_no_change > sid_no_change_limit:
                 # 如果sid没变化超过限制次数则退出循环
-                os.popen(f"echo SID No Change。。。")
-                os.popen(f"EXIT!")
+                os.popen(f'echo "SID No Change。。。"')
+                os.popen(f'echo "EXIT!"')
                 break
 
     def get_live_data_by_sid(self, game_id, sid):
@@ -148,14 +148,14 @@ class Zhiboba(object):
                 live_time = item.get("live_time")[11:]
                 left_score = item.get('left').get('score')
                 right_score = item.get('left').get('score')
-                os.popen(f"echo {live_time}| {left_score} - {right_score}| {user_chn}| {live_text}")
+                os.popen(f'echo "{live_time}| {left_score} - {right_score}| {user_chn}| {live_text}"')
 
                 img_url = item.get("img_url", '')
                 if img_url:
-                    os.popen(f"echo {img_url}")
+                    os.popen(f'echo "{img_url}"')
 
             except Exception as e:
-                os.popen('echo ERROR: Live Format Error.')
+                os.popen('echo "ERROR: Live Format Error."')
                 continue
 
 
