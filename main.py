@@ -9,6 +9,25 @@ from datetime import datetime, timedelta
 from prettytable import from_csv
 from io import StringIO
 import os
+import logging
+
+# 1、创建一个logger
+logger = logging.getLogger('mylogger')
+logger.setLevel(logging.DEBUG)
+# 2、创建一个handler，用于写入日志文件
+fh = logging.FileHandler('test.log')
+fh.setLevel(logging.DEBUG)
+# 再创建一个handler，用于输出到控制台
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# 3、定义handler的输出格式（formatter）
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# 4、给handler添加formatter
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+# 5、给logger添加handler
+logger.addHandler(fh)
+logger.addHandler(ch)
 
 
 def export_df_to_table(dataframe):
@@ -91,7 +110,6 @@ class Zhiboba(object):
         max_sid = self.get_live_max_sid(game_id)
         os.popen(f'echo "{max_sid}"')
 
-
         # 往前查30个sid
         for i in range(max_sid - 30, max_sid + 1):
             live_data = self.get_live_data_by_sid(game_id, i)
@@ -162,5 +180,8 @@ class Zhiboba(object):
 if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
-    z_obj = Zhiboba()
-    z_obj.main()
+    # z_obj = Zhiboba()
+    # z_obj.main()
+    logger.info('ceshiyixia')
+    logger.info('ceshiy1111')
+    logger.info('ceshiy2222')
