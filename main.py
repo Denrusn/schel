@@ -181,4 +181,4 @@ if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
     z_obj = Zhiboba()
-    z_obj.main(game_id='1231127', sid_no_change_limit=90)
+    z_obj.main(game_id='1231131', sid_no_change_limit=90)
