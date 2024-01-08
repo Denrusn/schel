@@ -176,9 +176,16 @@ class Zhiboba(object):
                 logger.info('ERROR: Live Format Error.')
                 continue
 
+    def bifen_time(self, date, game_id):
+        url = f"https://bifen4pc2.qiumibao.com/json/{date}/v2/{game_id}.htm?get={random.random()}"
+        res = requests.get(url, headers=self.headers)
+        print(res.text)
+        print(res.json())
+
 
 if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
     z_obj = Zhiboba()
-    z_obj.main(game_id='1231131', sid_no_change_limit=90)
+    # z_obj.main(game_id='1231131', sid_no_change_limit=90)
+    z_obj.bifen_time(date='2024-01-08', game_id='1231131')
