@@ -165,7 +165,7 @@ class Zhiboba(object):
                 live_text = item.get("live_text")
                 live_time = item.get("live_time")[11:]
                 left_score = item.get('left').get('score')
-                right_score = item.get('left').get('score')
+                right_score = item.get('right').get('score')
                 logger.info(f'{live_time}| {left_score} - {right_score}| {user_chn}| {live_text}')
 
                 img_url = item.get("img_url", '')
