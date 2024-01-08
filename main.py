@@ -123,7 +123,7 @@ class Zhiboba(object):
         while True:
             end_sid = self.get_live_max_sid(game_id)
             if end_sid > start_sid:
-                for i in range(start_sid + 1, end_sid):
+                for i in range(start_sid + 1, end_sid + 1):
                     live_data = self.get_live_data_by_sid(game_id, i)
                     if not live_data:
                         continue
