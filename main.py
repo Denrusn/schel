@@ -15,18 +15,18 @@ import logging
 logger = logging.getLogger('mylogger')
 logger.setLevel(logging.DEBUG)
 # 2、创建一个handler，用于写入日志文件
-fh = logging.FileHandler('test.log')
-fh.setLevel(logging.DEBUG)
+# fh = logging.FileHandler('test.log')
+# fh.setLevel(logging.DEBUG)
 # 再创建一个handler，用于输出到控制台
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
 # 3、定义handler的输出格式（formatter）
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(message)s')
 # 4、给handler添加formatter
-fh.setFormatter(formatter)
+# fh.setFormatter(formatter)
 ch.setFormatter(formatter)
 # 5、给logger添加handler
-logger.addHandler(fh)
+# logger.addHandler(fh)
 logger.addHandler(ch)
 
 
@@ -103,12 +103,12 @@ class Zhiboba(object):
         df = df[df['data-time'] <= beijing_tomorrow]
         df = df.loc[:, ['label', 'data-time', 'id']]
         df_str = export_df_to_table(df)
-        os.popen(f'echo "{df_str}"')
+        logger.info(f'{df_str}')
 
     def live(self, game_id="1231105", sid_no_change_limit=10):
         # 获取最大信号max_sid
         max_sid = self.get_live_max_sid(game_id)
-        os.popen(f'echo "{max_sid}"')
+        logger.info(f'{max_sid}')
 
         # 往前查30个sid
         for i in range(max_sid - 30, max_sid + 1):
@@ -136,8 +136,8 @@ class Zhiboba(object):
 
             if sid_no_change > sid_no_change_limit:
                 # 如果sid没变化超过限制次数则退出循环
-                os.popen(f'echo "SID No Change。。。"')
-                os.popen(f'echo "EXIT!"')
+                logger.info(f'SID No Change。。。')
+                logger.info(f'EXIT!')
                 break
 
     def get_live_data_by_sid(self, game_id, sid):
@@ -166,28 +166,19 @@ class Zhiboba(object):
                 live_time = item.get("live_time")[11:]
                 left_score = item.get('left').get('score')
                 right_score = item.get('left').get('score')
-                os.popen(f'echo "{live_time}| {left_score} - {right_score}| {user_chn}| {live_text}"')
+                logger.info(f'{live_time}| {left_score} - {right_score}| {user_chn}| {live_text}')
 
                 img_url = item.get("img_url", '')
                 if img_url:
-                    os.popen(f'echo "{img_url}"')
+                    logger.info(f'{img_url}')
 
             except Exception as e:
-                os.popen('echo "ERROR: Live Format Error."')
+                logger.info('ERROR: Live Format Error.')
                 continue
 
 
 if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
-    # z_obj = Zhiboba()
-    # z_obj.main()
-    logger.info('ceshiyixia')
-    time.sleep(5)
-    logger.info('ceshiy1111')
-    time.sleep(5)
-    logger.info('ceshiy2222')
-    time.sleep(5)
-    logger.info('ceshiy2222')
-    time.sleep(5)
-    logger.info('ceshiy2222')
+    z_obj = Zhiboba()
+    z_obj.main()
