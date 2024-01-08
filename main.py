@@ -70,10 +70,10 @@ class Zhiboba(object):
 
         }
 
-    def main(self, game_id='1231127'):
+    def main(self, game_id='1231127', sid_no_change_limit=10):
         self.home_page()
         # game_id = str(input("请输入比赛ID："))
-        self.live(game_id)
+        self.live(game_id, sid_no_change_limit)
 
     def home_page(self):
         '''
@@ -181,4 +181,4 @@ if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
     z_obj = Zhiboba()
-    z_obj.main(game_id='1231127')
+    z_obj.main(game_id='1231127', sid_no_change_limit=30)
