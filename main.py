@@ -21,7 +21,7 @@ logger.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
 # 3、定义handler的输出格式（formatter）
-formatter = logging.Formatter('%(asctime)s - %(message)s')
+formatter = logging.Formatter('%(message)s')
 # 4、给handler添加formatter
 # fh.setFormatter(formatter)
 ch.setFormatter(formatter)
@@ -70,10 +70,10 @@ class Zhiboba(object):
 
         }
 
-    def main(self, game_id='1231127', sid_no_change_limit=10):
+    def main(self, date='2024-01-10', game_id='1231142', sid_no_change_limit=10):
         self.home_page()
         # game_id = str(input("请输入比赛ID："))
-        self.live(game_id, sid_no_change_limit)
+        self.live(date, game_id, sid_no_change_limit)
 
     def home_page(self):
         '''
@@ -83,7 +83,10 @@ class Zhiboba(object):
 
         def remove_el(data_list, *args):
             for el in args:
-                data_list.remove(el)
+                try:
+                    data_list.remove(el)
+                except Exception:
+                    continue
             return data_list
 
         url = "https://www.zhibo8.com/"
@@ -93,8 +96,9 @@ class Zhiboba(object):
         basketball_info = list(map(lambda x: dict(x.attrib), basketball_li))
         df = pd.DataFrame(basketball_info)
         df['id'] = df['id'].apply(lambda x: x[6:])
-        df = df[df['label'].apply(lambda x: "NBA" in x)]
-        df['label'] = df['label'].apply(lambda x: ','.join(remove_el(x.split(','), 'NBA', '篮球')))
+        df = df[df['label'].apply(lambda x: "NBA" in x or "CBA" in x)]
+        # df['label'] = df['label'].apply(lambda x: ','.join(remove_el(x.split(','), 'NBA', '篮球')))
+        df['label'] = df['label'].apply(lambda x: ','.join(remove_el(x.split(','), '篮球', '中国篮球')))
         df['data-time'] = pd.to_datetime(df['data-time'])
 
         shanghai_tz = pytz.timezone('Asia/Shanghai')
@@ -105,7 +109,7 @@ class Zhiboba(object):
         df_str = export_df_to_table(df)
         logger.info(f'{df_str}')
 
-    def live(self, game_id="1231105", sid_no_change_limit=10):
+    def live(self, date='2024-01-10', game_id="1231142", sid_no_change_limit=10):
         # 获取最大信号max_sid
         max_sid = self.get_live_max_sid(game_id)
         logger.info(f'{max_sid}')
@@ -115,8 +119,8 @@ class Zhiboba(object):
             live_data = self.get_live_data_by_sid(game_id, i)
             if not live_data:
                 continue
-
-            self.live_format(live_data)
+            game_time = self.get_game_time(date, game_id)
+            self.live_format(live_data, game_time)
 
         start_sid = max_sid
         sid_no_change = 0  # sid没变化情况计数
@@ -127,7 +131,8 @@ class Zhiboba(object):
                     live_data = self.get_live_data_by_sid(game_id, i)
                     if not live_data:
                         continue
-                    self.live_format(live_data)
+                    game_time = self.get_game_time(date, game_id)
+                    self.live_format(live_data, game_time)
                 start_sid = end_sid
                 sid_no_change = 0
             else:
@@ -158,7 +163,7 @@ class Zhiboba(object):
         return max_sid
 
     @staticmethod
-    def live_format(data):
+    def live_format(data, game_time):
         for item in data:
             try:
                 user_chn = item.get("user_chn")
@@ -166,7 +171,7 @@ class Zhiboba(object):
                 live_time = item.get("live_time")[11:]
                 left_score = item.get('left').get('score')
                 right_score = item.get('right').get('score')
-                logger.info(f'{live_time}| {left_score} - {right_score}| {user_chn}| {live_text}')
+                logger.info(f'{live_time} | {game_time} | {left_score} - {right_score} | {user_chn} | {live_text}')
 
                 img_url = item.get("img_url", '')
                 if img_url:
@@ -176,17 +181,19 @@ class Zhiboba(object):
                 logger.info('ERROR: Live Format Error.')
                 continue
 
-    def bifen_time(self, date, game_id):
+    def get_game_time(self, date, game_id):
         url = f"https://bifen4pc2.qiumibao.com/json/{date}/v2/{game_id}.htm?get={random.random()}"
         res = requests.get(url, headers=self.headers)
-        print(res.text)
-        print(res.json())
+        game_info = res.json()
+        game_time = game_info.get('period_cn', '')
+        return game_time
 
 
 if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
+    shanghai_tz = pytz.timezone('Asia/Shanghai')
+    utc_today = datetime.now()
+    beijing_today = utc_today.astimezone(shanghai_tz).strftime("%Y-%m-%d")
     z_obj = Zhiboba()
-    # z_obj.bifen_time(date='2024-01-09', game_id='1231137')
-    z_obj.main(game_id='1231137', sid_no_change_limit=90)
-    
+    z_obj.main(date=beijing_today, game_id='1265683', sid_no_change_limit=90)
