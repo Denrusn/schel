@@ -187,5 +187,6 @@ if __name__ == '__main__':
     # h_obj = HupuSpider()
     # h_obj.home_page()
     z_obj = Zhiboba()
-    z_obj.main(game_id='1231131', sid_no_change_limit=90)
-    # z_obj.bifen_time(date='2024-01-08', game_id='1231131')
+    z_obj.bifen_time(date='2024-01-09', game_id='1231137')
+    z_obj.main(game_id='1231137', sid_no_change_limit=90)
+    
