@@ -196,4 +196,4 @@ if __name__ == '__main__':
     utc_today = datetime.now()
     beijing_today = utc_today.astimezone(shanghai_tz).strftime("%Y-%m-%d")
     z_obj = Zhiboba()
-    z_obj.main(date=beijing_today, game_id='1231347', sid_no_change_limit=120)
+    z_obj.main(date=beijing_today, game_id='1231364', sid_no_change_limit=120)
