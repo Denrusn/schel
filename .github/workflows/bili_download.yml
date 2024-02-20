@@ -25,7 +25,7 @@ jobs:
         
     - name: download...
       run: |
-        yutto https://space.bilibili.com/23330555/favlist?fid=2644967455&ftype=create -b
+        yutto https://space.bilibili.com/23330555/favlist?fid=2644967455 -b
       
     - name: 提交代码
       run: |
